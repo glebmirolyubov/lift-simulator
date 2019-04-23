@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GetNumberOfFloors : MonoBehaviour
@@ -11,7 +12,6 @@ public class GetNumberOfFloors : MonoBehaviour
 
     void Start()
     {
-        startCanvas.SetActive(true);
         errorText.SetActive(false);
         input = gameObject.GetComponent<InputField>();
     }
@@ -33,8 +33,9 @@ public class GetNumberOfFloors : MonoBehaviour
                 errorText.SetActive(true);
             }
         }
-        catch
+        catch (Exception e)
         {
+            Debug.LogException(e, this);
             errorText.SetActive(true);
         }
     }
