@@ -20,7 +20,7 @@ public class LiftButton : MonoBehaviour, IPressable, IInitializable<int>
     public void LiftButtonPressed()
     {
         liftButton.GetComponent<Image>().color = Color.yellow;
-        liftManager.AddFloorDestinationToQueue(this);
+        liftManager.AddFloorToQueue(this);
     }
 
     public void ResetLiftButton()
