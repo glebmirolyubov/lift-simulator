@@ -25,9 +25,14 @@ public class FloorFactory : MonoBehaviour
     public static Floor CreateFloor(int floorNumber, int numberOfFloors, GameObject parent)
     {
         Floor floor = Instantiate(instance.floor, Vector3.zero, Quaternion.identity).GetComponent<Floor>();
-        //floor.gameObject.transform.parent = parent.transform;
 
-        floor.InitializeFloor(floorNumber);
+        if (floorNumber == numberOfFloors)
+        {
+            floor.InitializeFloor(floorNumber, true);
+        }
+        else {
+            floor.InitializeFloor(floorNumber, false);
+        }
 
         floor.gameObject.transform.SetParent(parent.transform, false);
 
