@@ -22,7 +22,7 @@ public class LiftButtonFactory : MonoBehaviour
     public static LiftButton CreateLiftButton (int liftButtonNumber, GameObject parent)
     {
         LiftButton liftButton = Instantiate(instance.liftButton, Vector3.zero, Quaternion.identity).GetComponent<LiftButton>();
-        liftButton.InitializeLiftButton(liftButtonNumber);
+        liftButton.InitializeButton(liftButtonNumber);
         liftButton.gameObject.transform.SetParent(parent.transform, false);
 
         return liftButton;

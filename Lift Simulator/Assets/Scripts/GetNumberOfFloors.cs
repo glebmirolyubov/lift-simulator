@@ -25,7 +25,6 @@ public class GetNumberOfFloors : MonoBehaviour
             if (numberOfFloors >= 5 && numberOfFloors <= 20)
             {
                 uIManager.SetNumberOfFloors(numberOfFloors);
-                Debug.Log("Correct! There are " + numberOfFloors + " floors.");
                 startCanvas.SetActive(false);
             }
             else

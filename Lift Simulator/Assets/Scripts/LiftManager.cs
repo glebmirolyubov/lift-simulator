@@ -9,7 +9,10 @@ public class LiftManager : MonoBehaviour
     public TextMeshPro liftIndicatorText;
     public int currentLiftFloor;
 
-    LiftButton floorToMove;
+    int floorToMove;
+    LiftButton mainLiftButtonPressed;
+    Floor floorUpButton;
+    Floor floorDownButton;
     public bool liftIsMoving;
     bool liftReachedDestination;
 
@@ -36,24 +39,22 @@ public class LiftManager : MonoBehaviour
                 MoveLiftOneFloor(floorToMove);
             }
         }
-        //CheckIfMoreFloorsAreQueued();
     }
 
-    public void MoveLiftOneFloor(LiftButton liftButton)
+    public void MoveLiftOneFloor(int floorToMove)
     {
-        if (currentLiftFloor < liftButton.floorNumber)
+        if (currentLiftFloor < floorToMove)
         {
             currentLiftFloor++;
             liftIndicatorText.text = currentLiftFloor.ToString();
 
             if (queueFloorsList.Find(x => x.floorNumber == currentLiftFloor))
             {
-                LiftButton currentFloor = queueFloorsList.Find(x => x.floorNumber == currentLiftFloor);
-                StopLift(currentFloor);
+                StopLift(currentLiftFloor);
             }
             
         }
-        else if (currentLiftFloor > liftButton.floorNumber)
+        else if (currentLiftFloor > floorToMove)
         {
             currentLiftFloor--;
             liftIndicatorText.text = currentLiftFloor.ToString();
@@ -61,26 +62,36 @@ public class LiftManager : MonoBehaviour
             if (queueFloorsList.Find(x => x.floorNumber == currentLiftFloor))
             {
                 LiftButton currentFloor = queueFloorsList.Find(x => x.floorNumber == currentLiftFloor);
-                StopLift(currentFloor);
+                StopLift(currentLiftFloor);
             }
         }
-        else if (currentLiftFloor == floorToMove.floorNumber)
+        else if (currentLiftFloor == floorToMove)
         {
-            StopLift(liftButton);
+            StopLift(currentLiftFloor);
         }
     }
 
-    public void StopLift(LiftButton liftButton)
+    public void StopLift(int currentLiftFloor)
     {
-        liftIndicatorText.text = currentLiftFloor.ToString();
-        queueFloorsList.Remove(liftButton);
-        liftButton.ResetLiftButton();
+        liftIndicatorText.text = this.currentLiftFloor.ToString();
+        LiftButton currentFloor = queueFloorsList.Find(x => x.floorNumber == currentLiftFloor);
+        currentFloor.ResetButton();
+        queueFloorsList.Remove(currentFloor);
+
+        //if (floorUpButton.floorNumber == currentLiftFloor)
+        //{
+        //    floorUpButton.ResetUpButton();
+        //}
+        //if (floorDownButton.floorNumber == currentLiftFloor)
+        //{
+        //    floorDownButton.ResetDownButton();
+        //}
+
         liftIsMoving = false;
 
-        if (liftButton.floorNumber == floorToMove.floorNumber)
+        if (currentLiftFloor == floorToMove)
         {
-            //liftReachedDestination = true;
-            queueFloorsList.Remove(floorToMove);
+            queueFloorsList.Remove(mainLiftButtonPressed);
             CheckIfMoreFloorsAreQueued();
         }
 
@@ -109,8 +120,8 @@ public class LiftManager : MonoBehaviour
         if (queueFloorsList.Count > 0)
         {
             liftReachedDestination = false;
-            floorToMove = queueFloorsList[0];
-            //StartCoroutine("MoveLiftToFloor");
+            mainLiftButtonPressed = queueFloorsList[0];
+            floorToMove = queueFloorsList[0].floorNumber;
         } 
         else
         {
@@ -125,7 +136,30 @@ public class LiftManager : MonoBehaviour
         if (!liftIsMoving && liftReachedDestination)
         {
             liftReachedDestination = false;
-            floorToMove = liftButton;
+            mainLiftButtonPressed = liftButton;
+            floorToMove = liftButton.floorNumber;
+            StartCoroutine("MoveLiftToFloor");
+        }
+    }
+
+    public void ScheduleFloorUpButtonRequest(Floor floor)
+    {
+        floorUpButton = floor;
+        if (!liftIsMoving && liftReachedDestination)
+        {
+            liftReachedDestination = false;
+            floorToMove = floor.floorNumber;
+            StartCoroutine("MoveLiftToFloor");
+        }
+    }
+
+    public void ScheduleFloorDownButtonRequest(Floor floor)
+    {
+        floorDownButton = floor;
+        if (!liftIsMoving && liftReachedDestination)
+        {
+            liftReachedDestination = false;
+            floorToMove = floor.floorNumber;
             StartCoroutine("MoveLiftToFloor");
         }
     }
