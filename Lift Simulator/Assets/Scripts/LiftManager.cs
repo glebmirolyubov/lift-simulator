@@ -17,7 +17,6 @@ public class LiftManager : MonoBehaviour
     bool liftReachedDestination;
 
     List<LiftButton> queueFloorsList = new List<LiftButton>();
-    Queue <LiftButton> liftQueue = new Queue <LiftButton>();
 
     void Start()
     {
@@ -61,7 +60,6 @@ public class LiftManager : MonoBehaviour
 
             if (queueFloorsList.Find(x => x.floorNumber == currentLiftFloor))
             {
-                LiftButton currentFloor = queueFloorsList.Find(x => x.floorNumber == currentLiftFloor);
                 StopLift(currentLiftFloor);
             }
         }
@@ -74,24 +72,37 @@ public class LiftManager : MonoBehaviour
     public void StopLift(int currentLiftFloor)
     {
         liftIndicatorText.text = this.currentLiftFloor.ToString();
-        LiftButton currentFloor = queueFloorsList.Find(x => x.floorNumber == currentLiftFloor);
-        currentFloor.ResetButton();
-        queueFloorsList.Remove(currentFloor);
+        if (mainLiftButtonPressed != null)
+        {
+            LiftButton currentFloor = queueFloorsList.Find(x => x.floorNumber == currentLiftFloor);
+            currentFloor.ResetButton();
+            queueFloorsList.Remove(currentFloor);
+        }
 
-        //if (floorUpButton.floorNumber == currentLiftFloor)
-        //{
-        //    floorUpButton.ResetUpButton();
-        //}
-        //if (floorDownButton.floorNumber == currentLiftFloor)
-        //{
-        //    floorDownButton.ResetDownButton();
-        //}
+        if (floorUpButton != null)
+        {
+            if (floorUpButton.floorNumber == currentLiftFloor)
+            {
+                floorUpButton.ResetUpButton();
+            }
+        }
+
+        if (floorDownButton != null)
+        {
+            if (floorDownButton.floorNumber == currentLiftFloor)
+            {
+                floorDownButton.ResetDownButton();
+            }
+        }
 
         liftIsMoving = false;
 
         if (currentLiftFloor == floorToMove)
         {
-            queueFloorsList.Remove(mainLiftButtonPressed);
+            if (mainLiftButtonPressed != null)
+            {
+                queueFloorsList.Remove(mainLiftButtonPressed);
+            }
             CheckIfMoreFloorsAreQueued();
         }
 
@@ -120,8 +131,11 @@ public class LiftManager : MonoBehaviour
         if (queueFloorsList.Count > 0)
         {
             liftReachedDestination = false;
-            mainLiftButtonPressed = queueFloorsList[0];
-            floorToMove = queueFloorsList[0].floorNumber;
+            if (mainLiftButtonPressed != null)
+            {
+                mainLiftButtonPressed = queueFloorsList[0];
+                floorToMove = queueFloorsList[0].floorNumber;
+            }
         } 
         else
         {
