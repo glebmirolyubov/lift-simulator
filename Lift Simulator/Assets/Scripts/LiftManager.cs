@@ -69,7 +69,6 @@ public class LiftManager : MonoBehaviour
 
     public void StopLiftAndOpenDoor(LiftButton liftButton)
     {
-        Debug.Log(queueFloorsList.Count);
         liftIndicatorText.text = currentLiftFloor.ToString();
         queueFloorsList.Remove(liftButton);
         liftButton.ResetLiftButton();
@@ -79,7 +78,6 @@ public class LiftManager : MonoBehaviour
             liftReachedDestination = true;
             liftIsMoving = false;
             queueFloorsList.Remove(floorToMove);
-            Debug.Log(queueFloorsList.Count);
         } 
     }
 
@@ -88,7 +86,7 @@ public class LiftManager : MonoBehaviour
         if (queueFloorsList.Count > 0)
         {
             liftReachedDestination = false;
-          //  floorToMove = queueFloorsList[0];
+            floorToMove = queueFloorsList[0];
             StartCoroutine("MoveLiftToFloor");
             Debug.Log("Floor we should move to: " + floorToMove.floorNumber);
         }
