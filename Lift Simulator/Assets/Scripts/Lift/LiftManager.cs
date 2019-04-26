@@ -101,9 +101,12 @@ public class LiftManager : MonoBehaviour
         {
             if (floorUpButton.floorNumber == currentLiftFloor)
             {
-                Floor currentFloorUpButton = queueForFloorUpButtons.Find(x => x.floorNumber == currentLiftFloor);
-                currentFloorUpButton.ResetUpButton();
-                queueForFloorUpButtons.Remove(currentFloorUpButton);
+                if (queueForFloorUpButtons.Find(x => x.floorNumber == currentLiftFloor))
+                {
+                    Floor currentFloorUpButton = queueForFloorUpButtons.Find(x => x.floorNumber == currentLiftFloor);
+                    currentFloorUpButton.ResetUpButton();
+                    queueForFloorUpButtons.Remove(currentFloorUpButton);
+                }
             }
         }
 
@@ -111,9 +114,12 @@ public class LiftManager : MonoBehaviour
         {
             if (floorDownButton.floorNumber == currentLiftFloor)
             {
-                Floor currentFloorDownButton = queueForFloorDownButtons.Find(x => x.floorNumber == currentLiftFloor);
-                currentFloorDownButton.ResetUpButton();
-                queueForFloorDownButtons.Remove(currentFloorDownButton);
+                if (queueForFloorDownButtons.Find(x => x.floorNumber == currentLiftFloor))
+                {
+                    Floor currentFloorDownButton = queueForFloorDownButtons.Find(x => x.floorNumber == currentLiftFloor);
+                    currentFloorDownButton.ResetUpButton();
+                    queueForFloorDownButtons.Remove(currentFloorDownButton);
+                }
             }
         }
 
@@ -163,7 +169,7 @@ public class LiftManager : MonoBehaviour
 
     public void DetermineNextBehaviourAfterLiftDoorsClosed()
     {
-        if (queueForLiftButtons.Count > 0)
+        if (queueForLiftButtons.Count > 0 || queueForFloorUpButtons.Count > 0 || queueForFloorDownButtons.Count > 0)
         {
             liftIsMoving = true;
         }
@@ -184,20 +190,20 @@ public class LiftManager : MonoBehaviour
                 mainLiftButtonPressed = queueForLiftButtons[0];
                 floorToMove = queueForLiftButtons[0].floorNumber;
             }
-        } 
+        }
+        else if (queueForFloorUpButtons.Count > 0)
+        {
+            floorUpButton = queueForFloorUpButtons[0];
+            floorToMove = floorUpButton.floorNumber;
+        }
+        else if (queueForFloorDownButtons.Count > 0)
+        {
+            floorDownButton = queueForFloorDownButtons[0];
+            floorToMove = floorDownButton.floorNumber;
+        }
         else
         {
             liftReachedDestination = true;
-        }
-
-        if (queueForFloorUpButtons.Count > 0)
-        {
-            floorUpButton = queueForFloorUpButtons[0];
-        }
-
-        if (queueForFloorDownButtons.Count > 0)
-        {
-            floorDownButton = queueForFloorDownButtons[0];
         }
     }
 
