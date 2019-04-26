@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class FloorManager : MonoBehaviour
 {
+    public int currentFloorSelected = 1;
+
     public GameObject leftWall;
     public Dropdown floorsDropdown;
 
@@ -38,6 +40,7 @@ public class FloorManager : MonoBehaviour
 
     void DropdownValueChanged(Dropdown change)
     {
-        ConfigureCurrentFloor(change.value + 1);
+        currentFloorSelected = change.value + 1;
+        ConfigureCurrentFloor(currentFloorSelected);
     }
 }

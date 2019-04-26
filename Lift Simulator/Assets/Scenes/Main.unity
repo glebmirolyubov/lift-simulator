@@ -757,7 +757,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liftDoorsAnimation: {fileID: 698529794}
+  floorDoorsAnimation: {fileID: 1728422213}
   liftIndicatorText: {fileID: 57479665}
+  floorManager: {fileID: 149017052}
   currentLiftFloor: 0
   liftIsMoving: 0
 --- !u!4 &112359430
@@ -803,6 +805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d67f880f5ed6c0248889deab2a646eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentFloorSelected: 1
   leftWall: {fileID: 610257784}
   floorsDropdown: {fileID: 1832356272}
   floorsList: []

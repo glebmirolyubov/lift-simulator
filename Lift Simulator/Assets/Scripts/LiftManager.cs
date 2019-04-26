@@ -6,7 +6,9 @@ using TMPro;
 public class LiftManager : MonoBehaviour
 {
     public Animation liftDoorsAnimation;
+    public Animation floorDoorsAnimation;
     public TextMeshPro liftIndicatorText;
+    public FloorManager floorManager;
     public int currentLiftFloor;
 
     int floorToMove;
@@ -84,6 +86,7 @@ public class LiftManager : MonoBehaviour
     public void StopLift(int currentLiftFloor)
     {
         liftIndicatorText.text = this.currentLiftFloor.ToString();
+
         if (mainLiftButtonPressed != null)
         {
             if (queueForLiftButtons.Find(x => x.floorNumber == currentLiftFloor))
@@ -151,6 +154,11 @@ public class LiftManager : MonoBehaviour
     public void OpenLiftDoors()
     {
         liftDoorsAnimation.Play();
+
+        if (floorManager.currentFloorSelected == currentLiftFloor)
+        {
+            floorDoorsAnimation.Play();
+        }
     }
 
     public void DetermineNextBehaviourAfterLiftDoorsClosed()
@@ -170,6 +178,7 @@ public class LiftManager : MonoBehaviour
         if (queueForLiftButtons.Count > 0)
         {
             liftReachedDestination = false;
+
             if (mainLiftButtonPressed != null)
             {
                 mainLiftButtonPressed = queueForLiftButtons[0];
@@ -209,6 +218,7 @@ public class LiftManager : MonoBehaviour
     {
         floorUpButton = floor;
         queueForFloorUpButtons.Add(floorUpButton);
+
         if (!liftIsMoving && liftReachedDestination)
         {
             liftReachedDestination = false;
@@ -221,6 +231,7 @@ public class LiftManager : MonoBehaviour
     {
         floorDownButton = floor;
         queueForFloorDownButtons.Add(floorDownButton);
+
         if (!liftIsMoving && liftReachedDestination)
         {
             liftReachedDestination = false;
