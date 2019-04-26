@@ -228,4 +228,37 @@ public class LiftManager : MonoBehaviour
             StartCoroutine("MoveLiftToFloor");
         }
     }
+
+    public void StopLiftCompletely()
+    {
+        if (liftIsMoving)
+        {
+            liftIsMoving = false;
+            liftReachedDestination = true;
+
+            liftIndicatorText.text = currentLiftFloor.ToString();
+
+            foreach (LiftButton liftButton in queueForLiftButtons)
+            {
+                liftButton.ResetButton();
+            }
+
+            foreach (Floor floorUp in queueForFloorUpButtons)
+            {
+                floorUp.ResetUpButton();
+            }
+
+            foreach (Floor floorDown in queueForFloorDownButtons)
+            {
+                floorDown.ResetDownButton();
+            }
+
+            queueForLiftButtons.Clear();
+            queueForFloorUpButtons.Clear();
+            queueForFloorDownButtons.Clear();
+            mainLiftButtonPressed = null;
+            floorUpButton = null;
+            floorDownButton = null;
+        }
+    }
 }
